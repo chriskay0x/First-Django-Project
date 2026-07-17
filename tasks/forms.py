@@ -11,7 +11,7 @@ class TaskForm(forms.ModelForm):
         exclude = ('user',)
         
         
-class RegisterForm():
+class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')

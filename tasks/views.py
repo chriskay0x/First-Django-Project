@@ -98,7 +98,7 @@ def logout_view(request):
 
 
 def add_task(request):
-    forms = TaskForm()
+    form = TaskForm()
     if request.method == "POST":
         # title = request.POST.get('title')
         # due_time = request.POST.get('due_time')
@@ -109,12 +109,12 @@ def add_task(request):
         # )
         # task.save()
         
-        forms = TaskForm(request.POST)
+        form = TaskForm(request.POST)
         # ============================= #
         #  Check for form validation
         # ============================ #
         if form.is_valid():
-            instance = forms.save(commit=False)
+            instance = form.save(commit=False)
             instance.user = request.user
             instance.save()
             messages.success(request, "Task added successfully!")
@@ -123,7 +123,7 @@ def add_task(request):
             messages.error(request, "Error adding task. Please check the form.")
             return redirect('add_task')
     context = {
-        'forms':forms
+        'form':form
     }
         
     return render(request, 'add_task.html', context)
@@ -170,7 +170,7 @@ def update_task(request, pk):
         form = TaskForm(request.POST, instance=task)
         
         if form.is_valid():
-            form.save
+            form.save()
             messages.success('Successfully updated task')
             return redirect('home')
         else:
