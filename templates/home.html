@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="app">
+  <header>
+    <div class="eyebrow">Today</div>
+    <p>{{ greeting }}</p>
+    <h1>What needs <em>doing</em>?</h1>
+    <p class="sub">Add a task, check it off when it's done. Nothing here leaves this page.</p>
+  </header>
+
+  <form id="task-form">
+    <input id="task-input" type="text" placeholder="e.g. Reply to client email" autocomplete="off" maxlength="140">
+    <button type="submit" class="add">Add task</button>
+  </form>
+
+  <div class="meta-row">
+    <span id="count-label">0 tasks</span>
+    <div class="filters">
+      <a href="{% url "home" %}" class="active">All</a>
+      <a href="{% url "tasks" foo='true' %}">Done</a>
+      <a href="{% url "tasks" foo='false' %}">Not Done</a>
+    </div>
+  </div>
+
+  <ul id="list">
+    {% for task in tasks %}
+      <li class="item {% if task.done %}done{% endif %}">
+          <span class="check" role="checkbox" aria-checked="{{ task.done }}" tabindex="0">
+            <svg viewBox="0 0 22 22">
+                <circle cx="11" cy="11" r="9.3"></circle>
+                <path d="M6.5 11.5l3 3 6-6.5"></path>
+            </svg>
+          </span>
+
+          {% comment %} <span class="label">{{ task.title }}</span> {% endcomment %}
+          {{ task.title }} &nbsp; <a href="{% url "task" pk=task.id %}">Edit</a>
+          &nbsp;&nbsp; <a href="{% url "delete" pk=task.id %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <div class="empty" id="empty-state" style="display:none;">
+    <div class="glyph">nothing yet</div>
+    <p>Type something above and press Add task.</p>
+  </div>
+</div>
+{% endblock content %}
